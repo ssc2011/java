@@ -51,7 +51,7 @@
                     <form action="/todo/list" method="get">
                         <input type="hidden" name="size" value="${pageRequestDTO.size}">
                         <div class="mb-3">
-                            <input type="checkbox" name="finished" ${pageRequestDTO.finished?"checked":""}>완료여부
+                            <input type="checkbox" name="finished" ${pageRequestDTO.finished ? "checked" : ""}>완료여부
                         </div>
                         <div class="mb-3">
                             <input type="checkbox" name="types" value="t" ${pageRequestDTO.checkType("t")?"checked":""}>제목
@@ -158,7 +158,9 @@
             return
         }
         const num = target.getAttribute("data-num") //클릭된 a 태그에서 data-num 속성 가져옴. 페이지 번호를 나타냄
-        self.location = `/todo/list?page=\${num}` //data-num 속성값을 읽어와서 현재 주소를 변경
+        const formObj = document.querySelector("form")
+        formObj.innerHTML += `<input type='hidden' name='page' value='\${num}'>`
+        formObj.submit();
     }, false)
 
     document.querySelector(".clearBtn").addEventListener("click",function(e){ //clear 버튼 클릭했을 때 검색조건 초기화

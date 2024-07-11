@@ -94,10 +94,7 @@ public class TodoController {
 
         todoService.remove(tno); // 실제로는 TodoServiceImpl 객체의 remove 메서드가 호출됨
 
-        //수정 후 목록페이지로 이동할 때 page는 무조건 1페이지로 이동해서 size정보 활용
-        redirectAttributes.addAttribute("page", 1);
-        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
-        return "redirect:/todo/list";
+        return "redirect:/todo/list?" + pageRequestDTO.getLink();
     }
 
     @PostMapping("/modify")
@@ -114,9 +111,8 @@ public class TodoController {
         }
 
         todoService.modify(todoDTO);
-        redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
-        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
-        return "redirect:/todo/list";
+        redirectAttributes.addAttribute("tno", todoDTO.getTno());
+        return "redirect:/todo/read";
     }
 
 

@@ -7,8 +7,6 @@
 </head>
 <div class="card-body">
     <form action="/todo/modify" method="post">
-        <input type="hidden" name="page" value="${pageRequestDTO.page}">
-        <input type="hidden" name="size" value="${pageRequestDTO.size}">
     <div class="input-group mb-3">
         <span class="input-group-text">TNO</span>
         <input type="text" name="tno" class="form-control" value=<c:out value="${dto.tno}"/> readonly>
@@ -48,7 +46,7 @@
     document.querySelector(".btn-danger").addEventListener("click",function(e){
         e.preventDefault() // 이벤트의 기본 동작을 막음 (여기서는 폼의 기본 제출 동작을 막는다.)
         e.stopPropagation() // 이벤트의 상위 요소로의 전파를 막는다
-        formObj.action="/todo/remove" // 폼의 action 속성을 "/todo/remove"로 설정
+        formObj.action=`/todo/remove?${pageRequestDTO.link}` // 폼의 action 속성을 "/todo/remove"로 설정
         formObj.method="post" //폼의 method 속성을 "post"로 설정
         formObj.submit()
     },false)

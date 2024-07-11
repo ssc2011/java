@@ -19,7 +19,7 @@ public class Car {
 
     int breaking(int press){
         System.out.println(press+"만큼 정지");
-        return press*2;
+        return press*3;
     }
 }
 
