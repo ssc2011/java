@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 값은 인터페이스의 이름, 메소드의 이름은 <select>태그의 id와 반드시 일치시켜야 함-->
+<mapper namespace="org.zerock.springex.mapper.TodoMapper">
+    <select id="getTime" resultType="string">
+        select now()
+    </select>
+
+    <insert id="insert">
+        insert into tbl_todo (title, dueDate, writer)
+        values (#{title}, #{dueDate}, #{writer})
+    </insert>
+
+    <select id="selectAll" resultType="org.zerock.springex.domain.TodoVO">
+        select *
+        from tbl_todo
+        order by tno desc;
+    </select>
+
+    <select id="selectOne" resultType="org.zerock.springex.domain.TodoVO">
+        select *
+        from tbl_todo
+        where tno = #{tno}
+    </select>
+
+    <delete id="delete">
+        delete
+        from tbl_todo
+        where tno = #{tno}
+    </delete>
+
+    <update id="update">
+        update tbl_todo
+        set title    = #{title},
+            dueDate  = #{dueDate},
+            finished = #{finished}
+        where tno = #{tno}
+    </update>
+
+    <!--  페이징 처리 관련  -->
+    <!-- 2페이지 : 10개 skip => limit 10,10 -->
+    <!-- 5페이지 : 40개 skip => limit 40,10 -->
+    <!--
+           types가 null이 아닌 경우 :
+           select * from tbl_todo order by tno desc limit ?,?
+           types가 't' 또는 'w' 인 경우 :
+           select * from tbl_todo WHERE (title like concat('%',?,'%') OR writer like concat('%',?,'%')) order by tno desc limit ?,?
+     -->
+    <sql id="search">
+        <where> <!-- 동적 쿼리 부분 -->
+            <if test="types != null and types.length > 0">
+                <foreach collection="types" item="type" open="(" close=")" separator=" OR ">
+                    <if test="type=='t'.toString()"> <!-- 't'.toString() 은 문자열 비교 -->
+                        title like concat('%',#{keyword},'%')
+                    </if>
+                    <if test="type=='w'.toString()">
+                        writer like concat('%',#{keyword},'%')
+                    </if>
+                </foreach>
+            </if>
+            <if test="finished"> <!-- 검색조건이 있으면 마지막에 and finished=1 추가되고 검색조건이 없으면 finished=1이 추가됨 -->
+                <trim prefix="and"> <!-- 앞에 SQL이 있으면 and를 붙이고 SQL이 없으면 and가 붙지 않음 -->
+                    finished=1
+                </trim>
+            </if>
+            <if test="from != null and to != null">
+                <trim prefix="and"> <!-- 앞에 SQL이 있으면 and를 붙이고 SQL이 없으면 and가 붙지 않음 -->
+                    dueDate between #{from} and #{to}
+                </trim>
+            </if>
+        </where>
+    </sql>
+    <select id="selectList" resultType="org.zerock.springex.domain.TodoVO">
+        select * from tbl_todo
+        <include refid="search"/>
+        order by tno desc limit #{skip},#{size}
+    </select>
+
+    <!--  데이터 전체 갯수 구하기  -->
+    <select id="getCount" resultType="int">
+        select count(tno) from tbl_todo
+        <include refid="search"/>
+    </select>
+
+
+</mapper>

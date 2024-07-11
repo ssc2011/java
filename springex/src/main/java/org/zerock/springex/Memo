@@ -1,0 +1,17 @@
+
+
+- 컨트롤러 선언부에 사용하는 어노테이션
+@Controller : 스프링 빈의 처리됨을 명시
+@RestController : REST 방식의 처리를 위한 컨트롤러임을 명시
+@RequestMapping : 특정한 URL 패턴에 맞는 컨트롤러인지를 명시
+
+- 메소드 선언부에 사용하는 어노테이션
+@GetMapping, @PostMapping, @DeleteMapping, @PutMapping... : HTTP 전송방식(method)에 따라 해당 메소드를 지정하는 경우에 사용
+일반적으로 @GetMapping과 @PostMapping 주로 사용
+@RequestMapping : GET/POST 방식 모두를 지원하는 경우에 사용
+@ResponseBody: REST 방식에서 사용
+
+- 메소드의 파라미터에 사용하는 어노테이션
+@RequestParam : Request에 있는 특정한 이름의 데이터를 파라미터로 받아서 처리하는 경우에 사용
+@PathVariable : URL 경로의 일부를 변수로 삼아서 처리하기위해 사용
+@ModelAttribute : 해당 파라미터는 반드시 Model에 포함되어서 다시 뷰로 전달됨을 명시
