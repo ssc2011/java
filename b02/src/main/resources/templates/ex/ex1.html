@@ -8,5 +8,12 @@
     <h4>[[${list}]]</h4>
     <hr/>
     <h4 th:text="${list}"></h4>
+
+    <ul>
+        <li th:each="str: ${list}" th:text="${str}"></li> <!--  반복문 사용방법  -->
+    </ul>
+
+    <a th:href="@{/hello}">Go to /hello</a>
+    <a th:href="@{/hello(name='AAA',age=16)}">Go to /hello</a>
 </body>
 </html>
