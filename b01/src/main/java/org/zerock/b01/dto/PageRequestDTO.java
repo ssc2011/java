@@ -56,7 +56,7 @@ public class PageRequestDTO { // 클라이언트가 요청 시 전달한 페이�
                 }catch(UnsupportedEncodingException e){
                 }
             }
-            link = builder().toString();
+            link = builder.toString();
         }
         return link;
     }
